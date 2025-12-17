@@ -2,14 +2,14 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  static const baseUrl = "http://192.168.1.6:8000/api";
+  static const baseUrl = "http://192.168.1.8:8000/api";
 
   static Future<Map<String, dynamic>> getSensorData() async {
     final res = await http.get(Uri.parse("$baseUrl/sensor"));
     return json.decode(res.body);
   }
 
-  static Future<List<dynamic>> getChartData() async {
+  static Future<Map<String, dynamic>> getChartData() async {
     final res = await http.get(Uri.parse("$baseUrl/chart"));
     return json.decode(res.body);
   }

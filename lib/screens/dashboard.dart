@@ -15,7 +15,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
   
 
   Map<String, dynamic> data = {};
-  List<dynamic> chart = [];
+  Map<String, dynamic> chart = {};
+  bool servoActive = false;
 
   @override
   void initState() {
@@ -55,7 +56,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                InfoCard(title: "Gas MQ2", value: "${data['gas']} ppm"),
+                InfoCard(title: "Kelembapan Baju", value: "${data['soil']}%"),
                 InfoCard(title: "Rain", value: data['rain'] == 1 ? "Basah" : "Kering"),
               ],
             ),
@@ -66,13 +67,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
             Row(
               children: [
                 ElevatedButton(
-                  onPressed: () => ApiService.toggleServo(),
-                  child: Text("Aktifkan Servo"),
-                ),
-                SizedBox(width: 10),
-                ElevatedButton(
-                  onPressed: () => ApiService.buzzerOff(),
-                  child: Text("Matikan Buzzer"),
+                  onPressed: () {
+                    setState(() {
+                      servoActive = !servoActive;
+                    });
+                    ApiService.toggleServo();
+                  },
+                  child: Text(servoActive ? "Teduhkan Jemuran" : "Panaskan Jemuran"),
                 ),
               ],
             ),
@@ -82,7 +83,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             // Chart Cards
             ChartCard(title: "Grafik Suhu", data: chart, field: "temperature"),
             ChartCard(title: "Grafik Kelembapan", data: chart, field: "humidity"),
-            ChartCard(title: "Grafik Gas", data: chart, field: "gas"),
+            ChartCard(title: "Grafik Kelembapan Tanah", data: chart, field: "soil"),
             ChartCard(title: "Grafik Rain", data: chart, field: "rain"),
 
           ],
